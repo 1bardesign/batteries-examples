@@ -68,6 +68,8 @@ end))
 --contains checks if a specific element is present
 print("contains 7", functional.contains(numbers, 7))
 
+-------------------------------------------------------------------------------
+heading("partition and zip")
 --partition and zip are sort of the opposite of each other
 
 --partition is a two part filter;
@@ -79,7 +81,6 @@ print("contains 7", functional.contains(numbers, 7))
 
 --lets partition the numbers into halves,
 --and then zip them together as a sum of each pair
-heading("partition and zip")
 local bottom, top = functional.partition(numbers, function(v)
 	return v <= mean
 end)
@@ -92,8 +93,8 @@ end))
 -------------------------------------------------------------------------------
 heading("table data")
 --now we'll do some examples with more complex input data
-local seq_pairs = {{1, 2}, {3, 4}, {5, 6}, {7, 8}, {9, 10}}
-print_table("seq_pairs", seq_pairs)
+local seq_pairs = {{1, 2}, {3, 4}, {5, 6}, {7, 8}}
+print_table("seq pairs", seq_pairs)
 
 --find_min and find_max can be used to perform a search on some data
 --this can be very useful for performing things like nearest neighbour
@@ -115,6 +116,14 @@ print_table("second elem 8", functional.find_match(seq_pairs, function(v)
 end))
 --if no matching element exists, you get nil
 print_table("both even", functional.find_match(seq_pairs, function(v)
-	return  (v[1] % 2) == 0
+	return (v[1] % 2) == 0
 		and (v[2] % 2) == 0
 end))
+
+-------------------------------------------------------------------------------
+--heading("a little more complex")
+--todo: a nice more complex "gamey" example that highlights the benefits of
+--		not mutating the input and the more self-documenting nature
+--		of the query functions
+
+--that's it for now!
