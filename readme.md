@@ -4,7 +4,7 @@ A collection of example usage scripts for [batteries](https://github.com/1bardes
 
 Kept separate from the main `batteries` repo to avoid cluttering the commit history and bloating the repo size.
 
-Will contain along with a [love](https://love2d.org)-compatible `main.lua` which allows browsing them interactively.
+Will come with a [love](https://love2d.org)-compatible `main.lua` which allows browsing them interactively.
 
 # Index of Examples
 
@@ -14,9 +14,13 @@ Will contain along with a [love](https://love2d.org)-compatible `main.lua` which
 
 - `table.lua` - a run through the table api extensions
 - `math.lua` - demo of the math api extensions
-- `colour.lua` - using hex colours in love; hsv once it exists :)
 - `sequence.lua` - demonstrates the shorter, more sequential code afforded by `sequence`
-- `2d_geom.lua` - basic colliding and overlapping entities using `intersect` and `vec2`; requires love for visualisation.
+- `2d_geom.lua` - basic colliding and overlapping entities using `intersect` and `vec2`; requires love.
+- `state_boring.lua` - barebones state machine example.
+- `state_ai.lua` - visualised state machine ai for a sparring partner; requires love.
+- `stable_sort.lua` - show the benefit of a stable sort for sprite z sorting
+- `colour.lua` - using hex colours in love; hsv once it exists :)
+- `benchmark.lua` - benchmark various functionality.
 
 # Contributing
 
