@@ -1,6 +1,6 @@
---[[
-	functional programming example for batteries
-]]
+--
+--	functional programming example for batteries
+--
 
 --load helpers
 require("common")
@@ -102,12 +102,14 @@ print_table("seq pairs", seq_pairs)
 
 --note that we're passing in functional.sum here as the function argument
 --but any function that returns a numeric result works
-print_table("pair min sum", functional.find_min(seq_pairs, functional.sum))
-print_table("pair max sum", functional.find_max(seq_pairs, functional.sum))
+local sum = functional.sum
+
+print_table("pair min sum", functional.find_min(seq_pairs, sum))
+print_table("pair max sum", functional.find_max(seq_pairs, sum))
 
 --find_nearest can be useful if you have a specific value in mind
 --but often a find_min or find_max will result in clearer code
-print_table("sum nearest 10", functional.find_nearest(seq_pairs, functional.sum, 10))
+print_table("sum nearest 10", functional.find_nearest(seq_pairs, sum, 10))
 
 --find_match can be used as a single-element filter; it can save
 --creating another table if you only need one result
