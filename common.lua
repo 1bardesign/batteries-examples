@@ -12,6 +12,7 @@ function print_table(name, t)
 	print(name, table.stringify(t))
 end
 
+--print a heading with a fixed-width line surrounding it
 function heading(s)
 	print(("-- %s %s"):format(s, ("-"):rep(50 - s:len())))
 end
