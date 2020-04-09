@@ -4,7 +4,7 @@ A collection of example usage scripts for [batteries](https://github.com/1bardes
 
 Kept separate from the main `batteries` repo to avoid cluttering the commit history and bloating the repo size.
 
-Will come with a [love](https://love2d.org)-compatible `main.lua` which allows browsing them interactively.
+Comes with a [love](https://love2d.org)-compatible `main.lua` which allows browsing the source and output interactively.
 
 # Index of Examples
 
@@ -20,11 +20,11 @@ Will come with a [love](https://love2d.org)-compatible `main.lua` which allows b
 - `state_ai.lua` - visualised state machine ai for a sparring partner; requires love.
 - `stable_sort.lua` - show the benefit of a stable sort for sprite z sorting
 - `colour.lua` - using hex colours in love; hsv once it exists :)
-- `benchmark.lua` - benchmark various functionality.
+- `benchmark.lua` - benchmark various functionality interactively.
 
 # Contributing
 
-**This repo is currently being formed and contribution is not yet recommended.**
+**This repo is currently being formed and contribution is not _yet_ recommended. Keep your eyes peeled! 👀**
 
 Pull Requests with new demos will be welcome, though it will be required that they work with the rest of the example framework.
 
