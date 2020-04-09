@@ -3,6 +3,7 @@ require("common")
 --index of examples to choose from
 local examples = {
 	"functional",
+	"math",
 	"quit",
 }
 
@@ -28,7 +29,11 @@ function example:new(example_name)
 	for line in love.filesystem.lines(example_name .. ".lua") do
 		table.insert(src, line)
 	end
-	local exe = loadstring(table.concat(src, "\n"))
+	local exe, err = loadstring(table.concat(src, "\n"))
+	if exe == nil then
+		print(("error loading %s, %s"):format(example_name, err))
+		return nil
+	end
 	
 	local output = {}
 	--patch the global environment
@@ -232,6 +237,7 @@ function love.draw()
 end
 
 function love.keypressed(k)
+	--toggle back
 	if k == "escape" then
 		if current then
 			current = nil
@@ -240,16 +246,22 @@ function love.keypressed(k)
 		end
 		return
 	end
+	--quit or restart
+	if love.keyboard.isDown("lctrl") then
+		if k == "r" then
+			return love.event.quit("restart")
+		elseif k == "q" then
+			return love.event.quit()
+		end
+	end
+	--reload current
+	if k == "r" and love.keyboard.isDown("lshift") then
+		current = example:new(current.name)	
+	end
+	--pass through
 	if current then
 		current:keypressed(k)
 	else
 		menu:keypressed(k)
-	end
-	if love.keyboard.isDown("lctrl") then
-		if k == "r" then
-			love.event.quit("restart")
-		elseif k == "q" then
-			love.event.quit()
-		end
 	end
 end
