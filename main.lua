@@ -47,7 +47,7 @@ function example:new(example_name)
 
 	print = gprint
 
-	local output_producing_lines = {"print%(", "print_table%(", "heading%("}
+	local output_producing_lines = {"print%(", "print_var%(", "heading%("}
 	
 	--match print lines to source lines
 	local print_lines = {}

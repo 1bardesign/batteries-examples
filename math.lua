@@ -16,7 +16,7 @@ print("wrapped -20, 20", math.wrap(pre_wrap, -20, 20))
 
 --you can also wrap indices onto sequential tables
 local t = {1, 2, 3, 4, 5}
-print_table("t", t)
+print_var("t", t)
 print("wrapped index", math.wrap_index(pre_wrap, t))
 
 -------------------------------------------------------------------------------
@@ -33,8 +33,8 @@ print("clamped 20, 30", math.clamp(pre_clamp, 20, 30))
 --clamp01 is available as a shorthand for clamping something on the interval
 --from 0 to 1, such as for colours or lerp factors or whatever
 pre_clamp = {-0.5, 0.0, 0.5, 1.0, 1.5}
-print_table("pre clamp", pre_clamp)
-print_table("clamp01", table.map(pre_clamp, math.clamp01))
+print_var("pre clamp", pre_clamp)
+print_var("clamp01", table.map(pre_clamp, math.clamp01))
 
 -------------------------------------------------------------------------------
 heading("lerp")
@@ -71,18 +71,18 @@ heading("smoothstep")
 --interpolation factor, to transform things from a linear blend to
 --a non-linear blend.
 local factors = {0, 0.25, 0.5, 0.75, 1.0}
-print_table("factors", factors)
-print_table("plain lerp", table.map(factors, function(f)
+print_var("factors", factors)
+print_var("plain lerp", table.map(factors, function(f)
 	return math.lerp(a, b, f)
 end))
 --a common interpolant smoothing function is smoothstep, which goes through
 --the same points as usual at 0, 0.5 and 1, but ramps up and down "smoothly"
-print_table("smoothstep", table.map(factors, function(f)
+print_var("smoothstep", table.map(factors, function(f)
 	return math.lerp(a, b, math.smoothstep(f))
 end))
 --smootherstep is a slightly more expensive extension to that which
 --has slightly better properties for chained animations
-print_table("smootherstep", table.map(factors, function(f)
+print_var("smootherstep", table.map(factors, function(f)
 	return math.lerp(a, b, math.smootherstep(f))
 end))
 
@@ -98,15 +98,26 @@ local big_angle = 5.5
 print("big angle", big_angle)
 print("normalised", math.normalise_angle(big_angle))
 
---get the angle between two angles
+--get the difference between two angles
 --neither required to be normalised, result is normalised
-local a1 = 0.45 * math.tau
-local a2 = -0.45 * math.tau
+local a1 = 0.9 * math.tau
+local a2 = 0.1 * math.tau
 print("a1", a1)
 print("a2", a2)
-print("angle between", math.relative_angle(a1, a2))
+local dif = math.angle_difference(a1, a2)
+print("angle difference", dif)
+--direction is from the first angle to the second;
+--ie you can add the difference to the first to get the second
+--(or at least, the same position on the circle)
+print("a1 + difference", math.normalise_angle(a1 + dif))
 
---geometric rotation multi-return
+--lerp between angles, taking the shortest path around the circle
+print("angle lerp", math.lerp_angle(a1, a2, 0.5))
+--this is needed because a straight lerp might take the wrong path!
+print("wrong lerp", math.lerp(a1, a2, 0.5))
+
+--geometric rotation multi-return is provided, but seriously consider
+--using vec2 instead of separate coordinates where you can!
 --quarter turn
 local ox, oy = 1, 2
 print("original point", ox, oy)

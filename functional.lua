@@ -9,7 +9,7 @@ require("common")
 heading("numeric data")
 --we'll set up some example numeric data to demo the basics
 local numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-print_table("numbers", numbers)
+print_var("numbers", numbers)
 
 -------------------------------------------------------------------------------
 heading("map and filter")
@@ -18,7 +18,7 @@ heading("map and filter")
 --of a function call.
 
 --lets map each value to its square
-print_table("squares", functional.map(numbers, function(v)
+print_var("squares", functional.map(numbers, function(v)
 	return v * v
 end))
 
@@ -26,7 +26,7 @@ end))
 --which the passed function returns true
 
 --filter only the even elements
-print_table("even", functional.filter(numbers, function(v)
+print_var("even", functional.filter(numbers, function(v)
 	return (v % 2) == 0
 end))
 
@@ -84,9 +84,9 @@ heading("partition and zip")
 local bottom, top = functional.partition(numbers, function(v)
 	return v <= mean
 end)
-print_table("bottom", bottom)
-print_table("top", top)
-print_table("zip", functional.zip(bottom, top, function(a, b)
+print_var("bottom", bottom)
+print_var("top", top)
+print_var("zip", functional.zip(bottom, top, function(a, b)
 	return a + b
 end))
 
@@ -94,7 +94,7 @@ end))
 heading("table data")
 --now we'll do some examples with more complex input data
 local seq_pairs = {{1, 2}, {3, 4}, {5, 6}, {7, 8}}
-print_table("seq pairs", seq_pairs)
+print_var("seq pairs", seq_pairs)
 
 --find_min and find_max can be used to perform a search on some data
 --this can be very useful for performing things like nearest neighbour
@@ -104,20 +104,20 @@ print_table("seq pairs", seq_pairs)
 --but any function that returns a numeric result works
 local sum = functional.sum
 
-print_table("pair min sum", functional.find_min(seq_pairs, sum))
-print_table("pair max sum", functional.find_max(seq_pairs, sum))
+print_var("pair min sum", functional.find_min(seq_pairs, sum))
+print_var("pair max sum", functional.find_max(seq_pairs, sum))
 
 --find_nearest can be useful if you have a specific value in mind
 --but often a find_min or find_max will result in clearer code
-print_table("sum nearest 10", functional.find_nearest(seq_pairs, sum, 10))
+print_var("sum nearest 10", functional.find_nearest(seq_pairs, sum, 10))
 
 --find_match can be used as a single-element filter; it can save
 --creating another table if you only need one result
-print_table("second elem 8", functional.find_match(seq_pairs, function(v)
+print_var("second elem 8", functional.find_match(seq_pairs, function(v)
 	return v[2] == 8
 end))
 --if no matching element exists, you get nil
-print_table("both even", functional.find_match(seq_pairs, function(v)
+print_var("both even", functional.find_match(seq_pairs, function(v)
 	return (v[1] % 2) == 0
 		and (v[2] % 2) == 0
 end))

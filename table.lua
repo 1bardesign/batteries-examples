@@ -11,7 +11,7 @@ local v
 heading("stack and queue")
 
 local t = {1, 2, 3, 4, 5}
-print_table("t", t)
+print_var("t", t)
 
 --front and back can be slightly clearer than directly indexing
 --(moreso for back than front, for variables with long names)
@@ -25,22 +25,22 @@ print("back", table.back(t))
 --at the back of the table in a "last-in, first-out" order
 v = table.pop(t)
 print("popped", v)
-print_table("after pop", t)
+print_var("after pop", t)
 table.push(t, v)
-print_table("after push", t)
+print_var("after push", t)
 
 --push and shift can be used for queue operation; "first-in, first-out"
 
 v = table.shift(t)
 print("shifted", v)
-print_table("after shift", t)
+print_var("after shift", t)
 table.push(t, v)
-print_table("after push", t)
+print_var("after push", t)
 
 --unshift is a push at the front of the table, allowing fully
 --double-ended interaction
 table.unshift(t, table.pop(t, v))
-print_table("replace at front", t)
+print_var("replace at front", t)
 
 -------------------------------------------------------------------------------
 heading("collection management")
@@ -59,22 +59,45 @@ print("key search", table.key_of({
 --and allow removing by a value rather than index (including references,
 --such as to an ai target or inventory item)
 --they return whether anything was actually added or removed
-print_table("state before", t)
+print_var("state before", t)
 print("add 5?", table.add_value(t, 5))
-print_table("failed add", t)
+print_var("failed add", t)
 print("remove 5?", table.remove_value(t, 5))
-print_table("after remove", t)
+print_var("after remove", t)
 print("remove 5 again?", table.remove_value(t, 5))
-print_table("failed remove", t)
+print_var("failed remove", t)
 print("add 5 again?", table.add_value(t, 5))
-print_table("after re-add", t)
+print_var("after re-add", t)
 
 --careful; they perform a scan (ipairs) over the whole table though so
 --should not be used too heavily with big tables!
 
+-------------------------------------------------------------------------------
+heading("randomisation")
+
+t = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+--pick_random can choose a random variable from a table
+--prefers love.math.random over math.random but works with both
+--(results here will change with each run)
+print_var("random pick", table.pick_random(t))
+print_var("random pick", table.pick_random(t))
+print_var("random pick", table.pick_random(t))
+print_var("random pick", table.pick_random(t))
+
+--you may like to pass in a random generator to get deterministic results
+--for example in a world generator or for network sync or whatever
+--just pass it into the call and it'll be used
+--(anything that supports gen:random(min, max) will work)
+local seed = 1234
+local gen = love.math.newRandomGenerator(seed)
+print_var("deterministic", table.pick_random(t, gen))
+
+--shuffle does what it says on the tin
+--it also takes an optional random generator with the same requirements
+--as pick_random; a call is made for each element of the table in both cases
+print_var("shuffle order", table.shuffle(t))
+
 --todo:
---table.pick_random(t)
---table.shuffle(t)
 --table.reverse(t)
 --table.keys(t)
 --table.values(t)
@@ -84,5 +107,4 @@ print_table("after re-add", t)
 --table.clear(t) + explain luajit differences but why it's supported
 --table.copy(t, deep_or_into) + explain dissatisfaction
 --table.overlay(to, from)
---table.stringify(t)
 --table.unpack2(t) and friends + explain why

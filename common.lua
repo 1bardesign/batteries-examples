@@ -7,9 +7,9 @@ end
 --load batteries globally
 require("batteries"):export()
 
---print a named table, stringified
-function print_table(name, t)
-	print(name, table.stringify(t))
+--print a named variable, prettified
+function print_var(name, t)
+	print(name, string.pretty(t))
 end
 
 --print a heading with a fixed-width line surrounding it
