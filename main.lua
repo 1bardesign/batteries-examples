@@ -5,6 +5,7 @@ local examples = {
 	"table",
 	"functional",
 	"math",
+	"set",
 	"quit",
 }
 
