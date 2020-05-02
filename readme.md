@@ -11,6 +11,7 @@ Comes with a [love](https://love2d.org)-compatible `main.lua` which allows brows
 - `table.lua` - a run through the table api extensions.
 - `functional.lua` - a walkthrough of the functional programming facilities provided by `functional` module.
 - `math.lua` - demo of the math api extensions.
+- `set.lua` - demo of the `set` collection.
 
 # TODO
 
