@@ -1,6 +1,6 @@
 require("common")
 
---index of examples to choose from
+-- index of examples to choose from
 local examples = {
 	"table",
 	"functional",
@@ -9,22 +9,22 @@ local examples = {
 	"quit",
 }
 
---colours
-local heading_col = {colour.unpackRGB(0xffffff)}
-local heading_bg_col = {colour.unpackRGB(0x606060)}
+-- colours
+local heading_col = {colour.unpack_rgb(0xffffff)}
+local heading_bg_col = {colour.unpack_rgb(0x606060)}
 
-local code_col = {colour.unpackRGB(0xffffa0)}
-local comment_col = {colour.unpackRGB(0x908080)}
-local code_bg_col = {colour.unpackRGB(0x403020)}
+local code_col = {colour.unpack_rgb(0xffd0a0)}
+local comment_col = {colour.unpack_rgb(0xa08080)}
+local code_bg_col = {colour.unpack_rgb(0x403020)}
 
-local output_col = {colour.unpackRGB(0xaaffcc)}
-local caret_col = {colour.unpackRGB(0xffaacc)}
-local output_bg_col = {colour.unpackRGB(0x204030)}
+local output_col = {colour.unpack_rgb(0xaaffcc)}
+local caret_col = {colour.unpack_rgb(0xffaacc)}
+local output_bg_col = {colour.unpack_rgb(0x204030)}
 
 local line_height = 16
 local margin = 10
 
---class for loading, running, and drawing the results of an example
+-- class for loading, running, and drawing the results of an example
 local example = class()
 function example:new(example_name)
 	local src = {}
@@ -36,9 +36,9 @@ function example:new(example_name)
 		print(("error loading %s, %s"):format(example_name, err))
 		return nil
 	end
-	
+
 	local output = {}
-	--patch the global environment
+	-- patch the global environment
 	local gprint = print
 	function print(...)
 		table.insert(output, table.map({...}, tostring))
@@ -49,8 +49,8 @@ function example:new(example_name)
 	print = gprint
 
 	local output_producing_lines = {"print%(", "print_var%(", "heading%("}
-	
-	--match print lines to source lines
+
+	-- match print lines to source lines
 	local print_lines = {}
 	for i, v in ipairs(src) do
 		if table.any(output_producing_lines, function(m)
@@ -60,7 +60,7 @@ function example:new(example_name)
 		end
 	end
 
-	--todo: parse comments here instead of at draw time so we can properly handle multiline and don't repeat work
+	-- todo: parse comments here instead of at draw time so we can properly handle multiline and don't repeat work
 
 	return self:init{
 		name = example_name,
@@ -72,10 +72,10 @@ function example:new(example_name)
 end
 
 function example:scroll(amount)
-	--shift enables faster scrolling
-	local multiplier = love.keyboard.isDown("lshift") and 3 or 1 
+	-- shift enables faster scrolling
+	local multiplier = love.keyboard.isDown("lshift") and 3 or 1
 	amount = amount * multiplier
-	--clamp scroll within the file source
+	-- clamp scroll within the file source
 	self.offset = math.clamp(self.offset + amount, 1, #self.src)
 end
 
@@ -92,17 +92,17 @@ function example:draw()
 
 	love.graphics.push("all")
 
-	--headings
+	-- headings
 	love.graphics.translate(margin, margin)
 	height_available = height_available - margin
 	love.graphics.setColor(heading_bg_col)
 	love.graphics.rectangle("fill", 0, 0, total_width_available, line_height * 2 + margin * 2)
-	
+
 	love.graphics.translate(0, margin)
 	love.graphics.setColor(heading_col)
 	love.graphics.print("example: "..self.name, code_x, 0)
 	height_available = height_available - line_height
-	
+
 	love.graphics.translate(0, line_height)
 	love.graphics.print("code:", code_x, 0)
 	love.graphics.print("output:", output_x, 0)
@@ -121,7 +121,7 @@ function example:draw()
 		local i = self.offset + line
 		local v = self.src[i]
 		if v then
-			--single line comment
+			-- single line comment
 			local is_comment = v:match("^%-%-") ~= nil
 			love.graphics.setColor(is_comment and comment_col or code_col)
 			love.graphics.print(v, code_x, 0)
@@ -150,14 +150,14 @@ function example:keypressed(k)
 	if self.result.keypressed then
 		return self.result:keypressed(k)
 	end
-	--arrows
+	-- arrows
 	if k == "up" then
 		self:scroll(-1)
 	end
 	if k == "down" then
 		self:scroll(1)
 	end
-	--pgup/dn
+	-- pgup/dn
 	local page_amount = 16
 	if k == "pageup" then
 		self:scroll(-10)
@@ -167,11 +167,21 @@ function example:keypressed(k)
 	end
 end
 
-local current 
+local current
 
 local menu = {
 	selected = 1,
 	options = examples,
+	help = ([[
+		hi there!
+
+		thank you for checking out the examples,
+		i hope they help you understand how to use batteries
+
+		[arrow keys]           navigate
+		[space] or [return]    select
+		[escape]               go back
+	]]):deindent():split("\n")
 }
 
 function menu:scroll(amount)
@@ -198,23 +208,55 @@ function menu:draw()
 	love.graphics.push("all")
 	local w = 200
 	love.graphics.translate(margin, margin)
+
+	-- draw menu
+	love.graphics.push()
+
 	love.graphics.setColor(heading_bg_col)
 	love.graphics.rectangle("fill", 0, 0, w, line_height + margin)
 	love.graphics.setColor(heading_col)
 	love.graphics.print("select an example:", margin, margin / 2)
-	
+
 	love.graphics.translate(0, line_height + margin)
 	love.graphics.setColor(code_bg_col)
 	love.graphics.rectangle("fill", 0, 0, w, line_height * #self.options + margin * 2)
-	love.graphics.setColor(code_col)
 	love.graphics.translate(margin, margin)
 	for i, v in ipairs(self.options) do
+		love.graphics.setColor(caret_col)
 		if i == self.selected then
 			love.graphics.print(">", 0, 0)
 		end
+		love.graphics.setColor(code_col)
 		love.graphics.print(v, margin, 0)
 		love.graphics.translate(0, line_height)
 	end
+
+	love.graphics.pop()
+
+	-- draw help
+	love.graphics.push()
+
+	w = 400
+	local box_height = line_height * #self.help + margin * 2
+
+	love.graphics.translate(0, love.graphics.getHeight() - box_height - line_height - margin * 3)
+	love.graphics.setColor(heading_bg_col)
+	love.graphics.rectangle("fill", 0, 0, w, line_height + margin)
+	love.graphics.setColor(heading_col)
+	love.graphics.print("help:", margin, margin / 2)
+
+	love.graphics.translate(0, line_height + margin)
+	love.graphics.setColor(code_bg_col)
+	love.graphics.rectangle("fill", 0, 0, w, box_height)
+	love.graphics.setColor(code_col)
+	love.graphics.translate(margin, margin)
+	for i, v in ipairs(self.help) do
+		love.graphics.print(v, margin, 0)
+		love.graphics.translate(0, line_height)
+	end
+
+	love.graphics.pop()
+
 	love.graphics.pop()
 end
 
@@ -239,7 +281,7 @@ function love.draw()
 end
 
 function love.keypressed(k)
-	--toggle back
+	-- toggle back
 	if k == "escape" then
 		if current then
 			current = nil
@@ -248,7 +290,7 @@ function love.keypressed(k)
 		end
 		return
 	end
-	--quit or restart
+	-- quit or restart
 	if love.keyboard.isDown("lctrl") then
 		if k == "r" then
 			return love.event.quit("restart")
@@ -256,11 +298,11 @@ function love.keypressed(k)
 			return love.event.quit()
 		end
 	end
-	--reload current
+	-- reload current
 	if k == "r" and love.keyboard.isDown("lshift") then
-		current = example:new(current.name)	
+		current = example:new(current.name)
 	end
-	--pass through
+	-- pass through
 	if current then
 		current:keypressed(k)
 	else
