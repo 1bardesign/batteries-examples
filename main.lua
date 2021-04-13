@@ -6,20 +6,21 @@ local examples = {
 	"functional",
 	"math",
 	"set",
+	"intersect",
 	"quit",
 }
 
 --colours
-local heading_col = {colour.unpackRGB(0xffffff)}
-local heading_bg_col = {colour.unpackRGB(0x606060)}
+local heading_col = {colour.unpack_rgb(0xffffff)}
+local heading_bg_col = {colour.unpack_rgb(0x606060)}
 
-local code_col = {colour.unpackRGB(0xffffa0)}
-local comment_col = {colour.unpackRGB(0x908080)}
-local code_bg_col = {colour.unpackRGB(0x403020)}
+local code_col = {colour.unpack_rgb(0xffffa0)}
+local comment_col = {colour.unpack_rgb(0x908080)}
+local code_bg_col = {colour.unpack_rgb(0x403020)}
 
-local output_col = {colour.unpackRGB(0xaaffcc)}
-local caret_col = {colour.unpackRGB(0xffaacc)}
-local output_bg_col = {colour.unpackRGB(0x204030)}
+local output_col = {colour.unpack_rgb(0xaaffcc)}
+local caret_col = {colour.unpack_rgb(0xffaacc)}
+local output_bg_col = {colour.unpack_rgb(0x204030)}
 
 local line_height = 16
 local margin = 10
@@ -60,7 +61,7 @@ function example:new(example_name)
 		end
 	end
 
-	--todo: parse comments here instead of at draw time so we can properly handle multiline and don't repeat work
+	--todo: parse comments here instead of at draw time so we can properly handle multiline comments, and don't repeat work
 
 	return self:init{
 		name = example_name,
@@ -80,10 +81,6 @@ function example:scroll(amount)
 end
 
 function example:draw()
-	if self.result.draw then
-		return self.result:draw()
-	end
-
 	local code_x = margin
 	local output_x = 570
 
@@ -122,7 +119,7 @@ function example:draw()
 		local v = self.src[i]
 		if v then
 			--single line comment
-			local is_comment = v:match("^%-%-") ~= nil
+			local is_comment = v:match("^%s*%-%-") ~= nil
 			love.graphics.setColor(is_comment and comment_col or code_col)
 			love.graphics.print(v, code_x, 0)
 		end
@@ -137,7 +134,22 @@ function example:draw()
 		end
 		love.graphics.translate(0, line_height)
 	end
+
 	love.graphics.pop()
+
+	if self.result.draw then
+		love.graphics.push("all")
+		local x = margin + output_x
+		local y = margin * 3 + line_height * 2
+		local w = total_width_available - output_x
+		local h = height_available
+		OUTPUT_SIZE = vec2(w, h)
+
+		love.graphics.setScissor(x, y, w, h)
+		love.graphics.translate(x, y)
+		self.result:draw()
+		love.graphics.pop()
+	end
 end
 
 function example:update(dt)
