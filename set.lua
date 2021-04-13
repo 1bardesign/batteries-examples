@@ -2,7 +2,7 @@
 --	set example for batteries
 --
 
---load helpers
+-- load helpers
 require("common")
 
 -------------------------------------------------------------------------------
