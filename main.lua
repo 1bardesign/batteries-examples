@@ -6,7 +6,7 @@ local examples = {
 	"functional",
 	"math",
 	"set",
-	"intersect",
+	"2d_geom",
 	"quit",
 }
 
