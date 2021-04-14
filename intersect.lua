@@ -1,26 +1,31 @@
 --
 --	interactive intersection example for batteries
 --
+--	bouncing shapes in ~120 lines
+--
 
 require("common")
 
---generate some circle objects
+-- level gen
+
+--(helper)
 local gen_area = vec2(300, 500)
 local function random_point_in_area()
 	return vec2(love.math.random(), love.math.random()):vmuli(gen_area)
 end
+
+-- generate some circle objects
 local circles = functional.generate(20, function()
-	local c = {
-		--circle geometry
+	return {
+		-- circle geometry
 		pos = random_point_in_area(),
 		rad = love.math.random(5, 20),
-		--movement
-		vel = vec2(love.math.randomNormal() * 10, love.math.randomNormal() * 10),
+		-- movement
+		vel = vec2(love.math.randomNormal() * 40, love.math.randomNormal() * 40),
 	}
-	return c
 end)
 
---generate some random "world" lines
+-- generate some random "world" lines
 local lines = functional.stitch(
 	functional.generate(5, random_point_in_area),
 	function(start_pos)
@@ -35,7 +40,7 @@ local lines = functional.stitch(
 		chain = functional.cycle(chain, function(a, b)
 			return {a, b}
 		end)
-		--break loop randomly or if too far (likely to be a bad looking poly)
+		--break loop randomly, or if too far from start (likely to be a bad looking poly)
 		local last_link = table.back(chain)
 		if 
 			love.math.random() < 0.5
@@ -47,10 +52,12 @@ local lines = functional.stitch(
 	end
 )
 
+-- actual logic
 return {
 	update = function(self, dt)
-		--integrate
+		--independent update
 		for _, v in ipairs(circles) do
+			-- integrate position
 			v.pos:fmai(v.vel, dt)
 
 			-- pull inside world
@@ -62,11 +69,11 @@ return {
 				if v.pos.y > OUTPUT_SIZE.y then v.vel:saddi(0, -push) end
 			end
 		end
-		-- collide
-		-- (reuse this vector)
-		local separating_vector = vec2()
+		-- inter-dependent update: collide
 		for i = 1, #circles do
 			local a = circles[i]
+			-- (reuse this vector)
+			local separating_vector = vec2.pooled()
 			--collide against other circles
 			for j = i+1, #circles do
 				local b = circles[j]
@@ -76,21 +83,13 @@ return {
 					separating_vector
 				) then
 					--resolve collision
-					a.pos:fmai(separating_vector, 0.5)
-					b.pos:fmai(separating_vector, -0.5)
+					intersect.resolve_msv(a.pos, b.pos, separating_vector)
 
 					--reuse the separating vector as the normal
 					local normal = separating_vector:normalisei()
 
 					--transfer velocities
-					local old_a_vel = a.vel
-					local old_b_vel = b.vel
-					a.vel = old_a_vel:vrej(normal)
-					b.vel = old_b_vel:vrej(normal)
-					local a_remaining = old_a_vel:vsub(a.vel)
-					local b_remaining = old_b_vel:vsub(b.vel)
-					a.vel:vaddi(b_remaining)
-					b.vel:vaddi(a_remaining)
+					intersect.mutual_bounce(a.vel, b.vel, normal, 0.8)
 				end
 			end
 
@@ -101,16 +100,21 @@ return {
 					a.pos, a.rad,
 					separating_vector
 				) then
+					--resolve (we don't want to modify the line)
 					a.pos:fmai(separating_vector, -1)
 					intersect.bounce_off(a.vel, separating_vector:normalisei())
 				end
 			end
+			--clean up
+			separating_vector:release()
 		end
 	end,
 	draw = function(self)
+		--draw all the circles
 		for _, v in ipairs(circles) do
 			love.graphics.circle("fill", v.pos.x, v.pos.y, v.rad)
 		end
+		--draw all the lines, a bit darker
 		local g = 0.7
 		love.graphics.setColor(g, g, g, 1)
 		for _, v in ipairs(lines) do
@@ -118,4 +122,3 @@ return {
 		end
 	end,
 }
-
