@@ -3,8 +3,9 @@ require("common")
 -- index of examples to choose from
 local examples = {
 	"table",
-	"functional",
 	"math",
+	"class",
+	"functional",
 	"set",
 	"2d_geom",
 	"quit",
