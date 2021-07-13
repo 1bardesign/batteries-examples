@@ -1,5 +1,5 @@
 --
---	interactive intersection example for batteries
+--	interactive intersection example
 --
 --	bouncing shapes in ~120 lines
 --

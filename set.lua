@@ -1,5 +1,5 @@
 --
---	set example for batteries
+--	set example
 --
 
 -- load helpers

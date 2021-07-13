@@ -2,13 +2,36 @@ require("common")
 
 -- index of examples to choose from
 local examples = {
-	"table",
-	"math",
-	"class",
-	"functional",
-	"set",
-	"2d_geom",
-	"quit",
+	{"table", [[
+		table extension routines
+		easy to understand shorthand for common operations
+		randomisation
+	]]},
+	{"math", [[
+		mathematical extension routines
+		clamp, lerp, rotations...
+	]]},
+	{"class", [[
+		basic object oriented programming
+		classes and objects and inheritance
+	]]},
+	{"functional", [[
+		basic functional programming
+		non-destructive - map/filter/reduce
+		declarative code options - any/all/find_match
+	]]},
+	{"2d_geom", [[
+		interactive 2d physics
+		basic physics integration
+		line and circle collision
+	]]},
+	{"set", [[
+		in/out sets
+		set operations - union/intersection
+	]]},
+	{"quit", [[
+		bye!
+	]]},
 }
 
 -- colours
@@ -184,7 +207,10 @@ local current
 
 local menu = {
 	selected = 1,
-	options = examples,
+	options = functional.map(examples, function(v)
+		v[2] = v[2]:deindent():split("\n")
+		return v
+	end),
 	help = ([[
 		hi there!
 
@@ -209,7 +235,7 @@ function menu:keypressed(k)
 		self:scroll(1)
 	end
 	if k == "space" or k == "return" then
-		local name = self.options[self.selected]
+		local name = self.options[self.selected][1]
 		if name == "quit" then
 			return love.event.quit()
 		end
@@ -219,7 +245,7 @@ end
 
 function menu:draw()
 	love.graphics.push("all")
-	local w = 200
+	local w = 520
 	love.graphics.translate(margin, margin)
 
 	-- draw menu
@@ -235,12 +261,20 @@ function menu:draw()
 	love.graphics.rectangle("fill", 0, 0, w, line_height * #self.options + margin * 2)
 	love.graphics.translate(margin, margin)
 	for i, v in ipairs(self.options) do
-		love.graphics.setColor(caret_col)
 		if i == self.selected then
+			love.graphics.setColor(caret_col)
 			love.graphics.print(">", 0, 0)
+			love.graphics.push()
+			love.graphics.setColor(comment_col)
+			love.graphics.translate(130, 0)
+			for _, v in ipairs(v[2]) do
+				love.graphics.print(v)
+				love.graphics.translate(0, line_height)
+			end
+			love.graphics.pop()
 		end
 		love.graphics.setColor(code_col)
-		love.graphics.print(v, margin, 0)
+		love.graphics.print(v[1], margin, 0)
 		love.graphics.translate(0, line_height)
 	end
 

@@ -1,5 +1,5 @@
 --
---	functional programming example for batteries
+--	functional programming
 --
 
 -- load helpers

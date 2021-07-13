@@ -1,5 +1,5 @@
 --
---	table extension example for batteries
+--	table extension routines
 --
 
 require("common")

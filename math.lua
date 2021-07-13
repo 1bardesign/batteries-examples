@@ -1,5 +1,5 @@
 --
---	math extension example for batteries
+--	math extension
 --
 
 require("common")

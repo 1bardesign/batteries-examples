@@ -9,10 +9,11 @@ Comes with a [love](https://love2d.org)-compatible `main.lua` which allows brows
 # Index of Examples
 
 - `table.lua` - a run through the table api extensions.
+- `class.lua` - simple object oriented basics
 - `functional.lua` - a walkthrough of the functional programming facilities provided by `functional` module.
 - `math.lua` - demo of the math api extensions.
-- `set.lua` - demo of the `set` collection.
 - `2d_geom.lua` - basic colliding and overlapping entities using `intersect` and `vec2`; requires love.
+- `set.lua` - demo of the `set` collection.
 
 # TODO
 
