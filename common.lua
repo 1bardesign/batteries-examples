@@ -9,7 +9,7 @@ require("batteries"):export()
 
 --print a named variable, prettified
 function print_var(name, t)
-	print(name, string.pretty(t))
+	print(name, string.pretty(t, {indent = false}))
 end
 
 --print a heading with a fixed-width line surrounding it
