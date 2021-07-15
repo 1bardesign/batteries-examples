@@ -24,10 +24,10 @@ Comes with a [love](https://love2d.org)-compatible `main.lua` which allows brows
 - `colour.lua` - various colour routines; requires love.
 - `benchmark.lua` - benchmark various functionality interactively; requires love.
 
-# Contributing
+# Library Culture and Contributing
 
-**This repo is currently being formed and contribution is not _yet_ recommended. Keep your eyes peeled! 👀**
+As with batteries - I'm open to collaboration and happy to talk through issues or shortcomings.
 
-Pull Requests with new demos will be welcome, though it will be required that they work with the rest of the example framework.
+Pull Requests with new demos are welcome, though it will be required that they work with the rest of the example framework.
 
 Fixes and enhancements to existing demos are also great and will generally be merged optimistically.

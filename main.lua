@@ -50,7 +50,9 @@ local line_height = 16
 local margin = 10
 
 -- class for loading, running, and drawing the results of an example
-local example = class()
+local example = class({
+	name = "example",
+})
 function example:new(example_name)
 	local src = {}
 	for line in love.filesystem.lines(example_name .. ".lua") do
@@ -87,13 +89,11 @@ function example:new(example_name)
 
 	--todo: parse comments here instead of at draw time so we can properly handle multiline comments, and don't repeat work
 
-	return self:init{
-		name = example_name,
-		src = src,
-		print_lines = print_lines,
-		offset = 1,
-		result = result or {},
-	}
+	self.name = example_name
+	self.src = src
+	self.print_lines = print_lines
+	self.offset = 1
+	self.result = result or {}
 end
 
 function example:scroll(amount)
@@ -239,7 +239,7 @@ function menu:keypressed(k)
 		if name == "quit" then
 			return love.event.quit()
 		end
-		current = example:new(name)
+		current = example(name)
 	end
 end
 
@@ -347,7 +347,7 @@ function love.keypressed(k)
 	end
 	-- reload current
 	if k == "r" and love.keyboard.isDown("lshift") then
-		current = example:new(current.name)
+		current = example(current.name)
 	end
 	-- pass through
 	if current then

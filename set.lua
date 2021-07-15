@@ -7,8 +7,8 @@ require("common")
 
 -------------------------------------------------------------------------------
 heading("working sets")
-local a = set:new({1, 2, 3,})
-local b = set:new({3, 4, 5,})
+local a = set({1, 2, 3,})
+local b = set({3, 4, 5,})
 print_var("a", a:values())
 print_var("b", b:values())
 
