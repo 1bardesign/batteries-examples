@@ -20,6 +20,11 @@ local examples = {
 		non-destructive - map/filter/reduce
 		declarative code options - any/all/find_match
 	]]},
+	{"sequence", [[
+		oop method call sugar for sequential tables
+		simpler functional programming
+		less typing for you
+	]]},
 	{"2d_geom", [[
 		interactive 2d physics
 		basic physics integration

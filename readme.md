@@ -8,16 +8,16 @@ Comes with a [love](https://love2d.org)-compatible `main.lua` which allows brows
 
 # Index of Examples
 
-- `table.lua` - a run through the table api extensions.
+- `table.lua` - table api extensions
+- `math.lua` - math api extensions.
 - `class.lua` - simple object oriented basics
-- `functional.lua` - a walkthrough of the functional programming facilities provided by `functional` module.
-- `math.lua` - demo of the math api extensions.
+- `functional.lua` - functional programming facilities
+- `sequence.lua` - oop sugar for anything sequential
 - `2d_geom.lua` - basic colliding and overlapping entities using `intersect` and `vec2`; requires love.
-- `set.lua` - demo of the `set` collection.
+- `set.lua` - in/out sets
 
 # TODO
 
-- `sequence.lua` - demonstrates the shorter, more sequential code afforded by `sequence`.
 - `state_boring.lua` - barebones state machine example.
 - `stable_sort.lua` - show the benefit of a stable sort for sprite z sorting; requires love.
 - `state_ai.lua` - visualised state machine ai for a sparring partner; requires love.
