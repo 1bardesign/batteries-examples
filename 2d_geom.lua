@@ -9,7 +9,7 @@ require("common")
 -- level gen
 
 --(helper)
-local gen_area = vec2(300, 500)
+local gen_area = vec2(350, 500)
 local function random_point_in_area()
 	return vec2(love.math.random(), love.math.random()):vmuli(gen_area)
 end
@@ -24,6 +24,10 @@ local circles = functional.generate(20, function()
 		vel = vec2(love.math.randomNormal() * 40, love.math.randomNormal() * 40),
 	}
 end)
+
+--antigrav aabb area
+local antigrav_pos = gen_area:copy():smuli(0.5):saddi(50, 0)
+local antigrav_halfsize = vec2(30, 150)
 
 -- generate some random "world" lines
 local lines = functional.stitch(
@@ -59,6 +63,15 @@ return {
 		for _, v in ipairs(circles) do
 			-- integrate position
 			v.pos:fmai(v.vel, dt)
+
+			--inside anti-grav area, float up
+			v.antigrav = intersect.aabb_circle_overlap(
+				antigrav_pos, antigrav_halfsize,
+				v.pos, v.rad
+			)
+			if v.antigrav then
+				v.vel:saddi(0, -dt * 100)
+			end
 
 			-- pull inside world
 			local push = 100 * dt
@@ -110,13 +123,27 @@ return {
 		end
 	end,
 	draw = function(self)
+		--antigrav area
+		love.graphics.setColor(0.5, 0.25, 0.35)
+		love.graphics.rectangle(
+			"fill",
+			antigrav_pos.x - antigrav_halfsize.x,
+			antigrav_pos.y - antigrav_halfsize.y,
+			antigrav_halfsize.x * 2,
+			antigrav_halfsize.y * 2
+		)
 		--draw all the circles
 		for _, v in ipairs(circles) do
+			if v.antigrav then
+				love.graphics.setColor(1, 0.8, 0.8)
+			else
+				love.graphics.setColor(1, 1, 1)
+			end
 			love.graphics.circle("fill", v.pos.x, v.pos.y, v.rad)
 		end
 		--draw all the lines, a bit darker
 		local g = 0.7
-		love.graphics.setColor(g, g, g, 1)
+		love.graphics.setColor(g, g, g)
 		for _, v in ipairs(lines) do
 			love.graphics.line(v[1].x, v[1].y, v[2].x, v[2].y)
 		end
