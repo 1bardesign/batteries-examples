@@ -8,7 +8,7 @@ require("common")
 -------------------------------------------------------------------------------
 heading("numeric data")
 -- we'll set up some example numeric data to demo the basics
-local numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
+local numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 print_var("numbers", numbers)
 
 -------------------------------------------------------------------------------
@@ -31,31 +31,21 @@ print_var("even", functional.filter(numbers, function(v)
 end))
 
 ---map tables by their keys into one sequence
-local a = { ["a"] = 1,["b"] = 4 }
-local b = { ["a"] = 2,["b"] = 5 }
-local c = { ["a"] = 3,["b"] = 6 }
+local a = {a = 1, b = 4}
+local b = {a = 2, b = 5}
+local c = {a = 3, b = 6}
 
-print_var("mapped_field", functional.map_field({ a, b, c }, "b"))
+print_var("mapped_field", functional.map_field({a, b, c}, "b"))
 
 -- map objects by their function call results
 -- or map objects into a sequence from the result of a function
-local object = {}
-function a:position()
-	return { 1, 2 }
-end
-
-local second_object = {}
-function b:position()
-	return { 3, 4 }
-end
-
-function c(element, one, two)
-	local x, y = unpack(element:position())
+function my_function(element, one, two)
+	local x, y = element:unpack()
 	return (one * x) * (two * y)
 end
 
-print_var("sequence_a", functional.map_call({ a, b }, "position"))
-print_var("sequence_b", functional.map_call({ a, b }, c, 1, 2))
+print_var("sequence_a", functional.map_call({vec2(1, 0), vec2(0, 1)}, "rotate", math.pi))
+print_var("sequence_b", functional.map_call({vec2(1, 2), vec2(2, 1)}, my_function, 1, 2))
 
 -------------------------------------------------------------------------------
 heading("aggregate")
@@ -121,7 +111,7 @@ end))
 heading("table data")
 
 -- now we'll do some examples with more complex input data
-local seq_pairs = { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 7, 8 } }
+local seq_pairs = {{1, 2}, {3, 4}, {5, 6}, {7, 8}}
 print_var("seq pairs", seq_pairs)
 
 -- find_min and find_max can be used to perform a search on some data
