@@ -44,8 +44,11 @@ function my_function(element, one, two)
 	return (one * x) * (two * y)
 end
 
-print_var("sequence_a", functional.map_call({vec2(1, 0), vec2(0, 1)}, "rotate", math.pi))
-print_var("sequence_b", functional.map_call({vec2(1, 2), vec2(2, 1)}, my_function, 1, 2))
+local seq_a = {vec2(1, 0), vec2(0, 1)}
+local seq_b = {vec2(1, 2), vec2(2, 1)}
+
+print_var("mapped_seq_a", functional.map_call(seq_a, "rotate", math.pi))
+print_var("mapped_seq_b", functional.map_call(seq_b, my_function, 1, 2))
 
 -------------------------------------------------------------------------------
 heading("aggregate")
