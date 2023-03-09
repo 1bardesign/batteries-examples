@@ -8,7 +8,7 @@ require("common")
 -------------------------------------------------------------------------------
 heading("numeric data")
 -- we'll set up some example numeric data to demo the basics
-local numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+local numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
 print_var("numbers", numbers)
 
 -------------------------------------------------------------------------------
@@ -31,11 +31,12 @@ print_var("even", functional.filter(numbers, function(v)
 end))
 
 ---map tables by their keys into one sequence
-local a = {a = 1, b = 4}
-local b = {a = 2, b = 5}
-local c = {a = 3, b = 6}
-
-print_var("mapped_field", functional.map_field({a, b, c}, "b"))
+local tables = {
+	{ a = 1, b = 4 },
+	{ a = 2, b = 5 },
+	{ a = 3, b = 6 },
+}
+print_var("mapped_field", functional.map_field(tables, "b"))
 
 -- map objects by their function call results
 -- or map objects into a sequence from the result of a function
@@ -44,11 +45,12 @@ function my_function(element, one, two)
 	return (one * x) * (two * y)
 end
 
-local seq_a = {vec2(1, 0), vec2(0, 1)}
-local seq_b = {vec2(1, 2), vec2(2, 1)}
-
-print_var("mapped_seq_a", functional.map_call(seq_a, "rotate", math.pi))
-print_var("mapped_seq_b", functional.map_call(seq_b, my_function, 1, 2))
+local vectors = {
+	vec2(4, 20),
+	vec2(6, 9)
+}
+print_var("mapped_seq_a", functional.map_call(vectors, "rotate", math.pi))
+print_var("mapped_seq_b", functional.map_call(vectors, my_function, 1, 2))
 
 -------------------------------------------------------------------------------
 heading("aggregate")
@@ -114,7 +116,7 @@ end))
 heading("table data")
 
 -- now we'll do some examples with more complex input data
-local seq_pairs = {{1, 2}, {3, 4}, {5, 6}, {7, 8}}
+local seq_pairs = { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 7, 8 } }
 print_var("seq pairs", seq_pairs)
 
 -- find_min and find_max can be used to perform a search on some data
