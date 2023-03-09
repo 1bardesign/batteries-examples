@@ -30,6 +30,28 @@ print_var("even", functional.filter(numbers, function(v)
 	return (v % 2) == 0
 end))
 
+---map tables by their keys into one sequence
+local tables = {
+	{a = 1, b = 4},
+	{a = 2, b = 5},
+	{a = 3, b = 6},
+}
+print_var("mapped_field", functional.map_field(tables, "b"))
+
+-- map objects by their function call results
+-- or map objects into a sequence from the result of a function
+function my_function(element, one, two)
+	local x, y = element:unpack()
+	return (one * x) * (two * y)
+end
+
+local vectors = {
+	vec2(4, 20),
+	vec2(6, 9)
+}
+print_var("mapped_seq_a", functional.map_call(vectors, "rotate", math.pi))
+print_var("mapped_seq_b", functional.map_call(vectors, my_function, 1, 2))
+
 -------------------------------------------------------------------------------
 heading("aggregate")
 -- these functions work on the passed table as an aggregate, returning
