@@ -8,7 +8,7 @@ require("common")
 -------------------------------------------------------------------------------
 heading("numeric data")
 -- we'll set up some example numeric data to demo the basics
-local numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
+local numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 print_var("numbers", numbers)
 
 -------------------------------------------------------------------------------
@@ -32,9 +32,9 @@ end))
 
 ---map tables by their keys into one sequence
 local tables = {
-	{ a = 1, b = 4 },
-	{ a = 2, b = 5 },
-	{ a = 3, b = 6 },
+	{a = 1, b = 4},
+	{a = 2, b = 5},
+	{a = 3, b = 6},
 }
 print_var("mapped_field", functional.map_field(tables, "b"))
 
@@ -116,7 +116,7 @@ end))
 heading("table data")
 
 -- now we'll do some examples with more complex input data
-local seq_pairs = { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 7, 8 } }
+local seq_pairs = {{1, 2}, {3, 4}, {5, 6}, {7, 8}}
 print_var("seq pairs", seq_pairs)
 
 -- find_min and find_max can be used to perform a search on some data
