@@ -34,6 +34,9 @@ local examples = {
 		in/out sets
 		set operations - union/intersection
 	]]},
+	{"pathfind", [[
+		A* pathfinding
+	]]},
 	{"quit", [[
 		bye!
 	]]},
@@ -157,8 +160,14 @@ function example:draw()
 			love.graphics.setColor(caret_col)
 			love.graphics.print(">", output_x - 16, 0)
 			love.graphics.setColor(output_col)
+			local output_w = total_width_available - output_x - margin * 2
+			local heading_w = (#print_line == 1) and output_w or 120
+			local elem_w = (output_w - heading_w) / math.max(1, #print_line - 1)
+			local x_pos = output_x + 8
 			for j, p in ipairs(print_line) do
-				love.graphics.print(p, output_x + 8 + (j - 1) * 120, 0)
+				local current_w = (j == 1) and heading_w or elem_w
+				love.graphics.printf(p, x_pos, 0, current_w, "left")
+				x_pos = x_pos + current_w
 			end
 		end
 		love.graphics.translate(0, line_height)
